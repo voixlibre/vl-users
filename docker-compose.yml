@@ -1,0 +1,7 @@
+version: '2'
+services:
+  bibliodb:
+    container_name: users
+    image: jaycecordon/vlusers:0.0.1-SNAPSHOT
+    ports:
+      - "8640:8640"

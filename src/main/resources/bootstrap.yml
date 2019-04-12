@@ -1,0 +1,10 @@
+server:
+  port: 8640
+
+spring:
+  application:
+    name: ms-users
+  cloud:
+    config:
+      uri: http://localhost:8650/
+
