@@ -1,3 +1,4 @@
+
 version: '2'
 services:
   bibliodb:
@@ -5,3 +6,18 @@ services:
     image: jaycecordon/vlusers:0.0.1-SNAPSHOT
     ports:
       - "8640:8640"
+
+  db-users:
+    image: postgres:alpine
+    ports:
+      - '8740:5432'
+    container_name: dbusers
+    environment:
+      POSTGRES_DB: db_VL-auth
+      POSTGRES_USER: usr_auth
+      POSTGRES_PASSWORD: auth
+    volumes:
+      - './sql:/docker-entrypoint-initdb.d'
+    restart: always
+    network_mode: bridge
+

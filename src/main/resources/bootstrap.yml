@@ -6,5 +6,5 @@ spring:
     name: ms-users
   cloud:
     config:
-      uri: http://localhost:8650/
+      uri: http://164.132.197.173:8650/
 
