@@ -1,0 +1,77 @@
+version: '3.5'
+services:
+  server:
+    ports:
+      - '8650:8650'
+    image: jaycecordon/vlserver:0.0.1-SNAPSHOT
+    container_name: vlserver
+    restart: always
+
+
+  eureka:
+    image: jaycecordon/vleureka:0.0.1-SNAPSHOT
+    container_name: vleureka
+    depends_on:
+      - server
+    ports:
+      - '8652:8652'
+    restart: always
+
+  zuul:
+    image: jaycecordon/vleureka:0.0.1-SNAPSHOT
+    container_name: vlzuul
+    depends_on:
+       - eureka
+       - server
+    ports:
+       - '8651:8651'
+    restart: always
+
+  db-users:
+    image: postgres:alpine
+    ports:
+      - '8740:5432'
+    container_name: dbusers
+    environment:
+      POSTGRES_DB: db_VL-auth
+      POSTGRES_USER: usr_auth
+      POSTGRES_PASSWORD: auth
+    volumes:
+      - './sql:/docker-entrypoint-initdb.d'
+    restart: always
+    network_mode: bridge
+
+  ms-topics:
+    image: jaycecordon/vltopics:0.0.1-SNAPSHOT
+    container_name: vltopics
+    ports:
+      - '8641:8641'
+    restart: always
+    depends_on:
+      - server
+      - eureka
+
+  ms-users:
+    image: jaycecordon/vleureka:0.0.1-SNAPSHOT
+    container_name: vlusers
+    ports:
+      - '8640:8640'
+    depends_on:
+      - db-users
+      - server
+      - eureka
+    restart: always
+
+  ms-client:
+    image: jaycecordon/vlclient:0.0.1-SNAPSHOT
+    container_name: vlclient
+    ports:
+      - '8649:8649'
+    depends_on:
+      - ms-users
+      - ms-topics
+      - zuul
+      - server
+      - eureka
+    restart: always
+
