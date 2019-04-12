@@ -1,11 +1,13 @@
 
 version: '2'
 services:
-  bibliodb:
+  users:
     container_name: users
     image: jaycecordon/vlusers:0.0.1-SNAPSHOT
     ports:
       - "8640:8640"
+    depends_on:
+      - db-users
 
   db-users:
     image: postgres:alpine
