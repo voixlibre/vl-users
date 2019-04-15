@@ -7,7 +7,10 @@ import org.greenwin.VLUsers.repositories.AppUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +51,16 @@ public class UserController {
         return appUserRepository.save(appUser);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable ("id") int id){
+        appUserRepository.delete(appUserRepository.getAppUserById(id));
+    }
+
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public AppUser updateUser(@RequestBody AppUser user){
+        AppUser appUser = appUserRepository.getAppUserById(user.getId());
+        user.setPassword(appUser.getPassword());
+        return appUserRepository.save(user);
+    }
 
 }
