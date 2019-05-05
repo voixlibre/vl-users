@@ -41,24 +41,16 @@ public class VlUsersApplication implements CommandLineRunner {
         AppRole deliverer = new AppRole( "STATISTICIAN");
 
         AppUser julien = new AppUser("juliencauwet@yahoo.fr","12345");
+        AppUser eric = new AppUser("dhallunie@hotmail.fr", "12345");
+        AppUser bruno = new AppUser("b.gerussi@gmail.com", "12345");
 
-        //appUserRepository.save(julien);
-//
-        //julien.getAppRole().add(admin);
-        //julien.getAppRole().add(productor);
-        //julien.getAppRole().add(consumer);
-//
+        appUserRepository.save(julien);
+        appUserRepository.save(eric);
+
         appRoleRepository.save(admin);
         appRoleRepository.save(productor);
         appRoleRepository.save(consumer);
         appRoleRepository.save(deliverer);
-
-
-
-        System.out.println(appRoleRepository.findById(1));
-        System.out.println(appUserRepository.findByEmail("juliencauwet@yahoo.fr"));
-
-        System.out.println("test: " +configuration.getTest());
 
     }
 }

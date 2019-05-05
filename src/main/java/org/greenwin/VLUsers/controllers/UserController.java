@@ -14,8 +14,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -46,7 +44,7 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/")
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AppUser saveUser(@RequestBody AppUser appUser){
         return appUserRepository.save(appUser);
     }
