@@ -4,6 +4,7 @@ import org.greenwin.VLUsers.configuration.ApplicationPropertiesConfiguration;
 import org.greenwin.VLUsers.entities.AppUser;
 import org.greenwin.VLUsers.repositories.AppRoleRepository;
 import org.greenwin.VLUsers.repositories.AppUserRepository;
+import org.greenwin.VLUsers.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +28,34 @@ public class UserController {
     AppRoleRepository appRoleRepository;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     ApplicationPropertiesConfiguration configuration;
 
-    @GetMapping("/")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public AppUser login(@RequestBody AppUser user){
+        return  userService.getUserIfCorrectCredits(user.getEmail(), user.getPassword());
+    }
+
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<AppUser> getAllUsers(){
         logger.info("entering getAllUsers()");
         logger.info("configuration test: " + configuration.getTest());
         return appUserRepository.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AppUser getUserById(@PathVariable("id") int id){
         AppUser user = appUserRepository.getAppUserById(id);
         List<AppUser> users = new ArrayList<>();
         users.add(user);
+        return user;
+    }
+
+    @GetMapping("/email/{email}")
+    public AppUser getUserByEmail(@PathVariable("email") String email){
+        AppUser user = appUserRepository.findByEmail(email);
         return user;
     }
 
@@ -60,5 +75,7 @@ public class UserController {
         user.setPassword(appUser.getPassword());
         return appUserRepository.save(user);
     }
+
+
 
 }

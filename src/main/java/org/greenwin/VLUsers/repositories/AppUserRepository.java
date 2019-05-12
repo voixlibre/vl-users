@@ -21,4 +21,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
     List<AppUser> findAllByNameContainingIgnoreCase(String name);
 
     List<AppUser> getAppUsersByAppRoleEquals(AppRole role);
+
 }
