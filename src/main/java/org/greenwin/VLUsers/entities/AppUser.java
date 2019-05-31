@@ -22,6 +22,16 @@ public class AppUser {
         this.password = password;
     }
 
+    public AppUser(@NotNull String email, @NotNull String password, String firstName, String name, String tel, LocalDate birthday, LocalDateTime registrationDate ){
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.name = name;
+        this.tel = tel;
+        this.birthday = birthday;
+        this.registrationDate = registrationDate;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

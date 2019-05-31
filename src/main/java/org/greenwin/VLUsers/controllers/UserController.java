@@ -2,6 +2,8 @@ package org.greenwin.VLUsers.controllers;
 
 import org.greenwin.VLUsers.configuration.ApplicationPropertiesConfiguration;
 import org.greenwin.VLUsers.entities.AppUser;
+import org.greenwin.VLUsers.exceptions.UserAlreadyExistsException;
+import org.greenwin.VLUsers.exceptions.UserNotFoundException;
 import org.greenwin.VLUsers.repositories.AppRoleRepository;
 import org.greenwin.VLUsers.repositories.AppUserRepository;
 import org.greenwin.VLUsers.services.UserService;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,6 @@ public class UserController {
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<AppUser> getAllUsers(){
-        logger.info("entering getAllUsers()");
-        logger.info("configuration test: " + configuration.getTest());
         return appUserRepository.findAll();
     }
 
@@ -55,13 +54,18 @@ public class UserController {
 
     @GetMapping("/email/{email}")
     public AppUser getUserByEmail(@PathVariable("email") String email){
-        AppUser user = appUserRepository.findByEmail(email);
+        AppUser user = appUserRepository.getByEmail(email);
         return user;
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AppUser saveUser(@RequestBody AppUser appUser){
-        return appUserRepository.save(appUser);
+        try {
+            return userService.registerUser(appUser);
+        }catch (UserAlreadyExistsException e){
+            throw new UserAlreadyExistsException();
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -74,6 +78,14 @@ public class UserController {
         AppUser appUser = appUserRepository.getAppUserById(user.getId());
         user.setPassword(appUser.getPassword());
         return appUserRepository.save(user);
+    }
+
+    @GetMapping("/find/{email}")
+    public AppUser findUser(@PathVariable ("email") String email) throws UserNotFoundException {
+        AppUser user = userService.findUserByEmail(email);
+        if (user == null)
+            throw new UserNotFoundException();
+        return user;
     }
 
 
