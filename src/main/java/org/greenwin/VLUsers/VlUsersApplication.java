@@ -53,6 +53,8 @@ public class VlUsersApplication implements CommandLineRunner {
         AppUser manu = new AppUser("emfavvic@gmail.com", BPwdEncoderUtils.BCryptPassword("12345"), "Emmanuel", "Favre-Victoire", null, null, null);
         AppUser juan= new AppUser("jjolivero@gmail.com", BPwdEncoderUtils.BCryptPassword("12345"), "Juan-Jose", "Olivero", "+41794892845", null, null );
 
+        julien.setAdmin(true);
+
         List<AppUser> appUsers = Arrays.asList(julien, eric, bruno, laetitia, maman, manu, juan);
 
         appRoleRepository.save(admin);

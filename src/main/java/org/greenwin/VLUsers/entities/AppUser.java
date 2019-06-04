@@ -72,6 +72,9 @@ public class AppUser {
     @Column(name = "active")
     private Boolean active = true;
 
+    @Column(name = "admin")
+    private Boolean admin = false;
+
     public int getId() {
         return id;
     }
@@ -161,5 +164,11 @@ public class AppUser {
         this.active = active;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }

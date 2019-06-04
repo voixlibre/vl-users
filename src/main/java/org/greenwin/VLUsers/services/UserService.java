@@ -28,16 +28,6 @@ public class UserService {
             logger.info("Credentials do not match.");
         }
             return null;
-
-        /*
-        try {
-            if(user.getPassword().equals(password))
-                return user;
-        }catch (NullPointerException e){
-            logger.info("Credentials do not match.");
-        }
-        return null;
-        */
     }
 
     public AppUser registerUser(AppUser user){
@@ -50,6 +40,10 @@ public class UserService {
     public AppUser findUserByEmail(String email){
 
         return appUserRepository.getByEmail(email);
+    }
+
+    public void deleteUser(int id){
+        appUserRepository.delete(appUserRepository.getAppUserById(id));
     }
 
 }

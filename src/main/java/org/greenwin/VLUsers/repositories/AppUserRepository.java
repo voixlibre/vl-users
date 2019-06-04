@@ -22,4 +22,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 
     List<AppUser> getAppUsersByAppRoleEquals(AppRole role);
 
+
 }

@@ -68,11 +68,6 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable ("id") int id){
-        appUserRepository.delete(appUserRepository.getAppUserById(id));
-    }
-
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public AppUser updateUser(@RequestBody AppUser user){
         AppUser appUser = appUserRepository.getAppUserById(user.getId());
@@ -86,6 +81,11 @@ public class UserController {
         if (user == null)
             throw new UserNotFoundException();
         return user;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable int id){
+        userService.deleteUser(id);
     }
 
 
