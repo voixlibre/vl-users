@@ -4,32 +4,35 @@ import org.greenwin.VLUsers.configuration.ApplicationPropertiesConfiguration;
 import org.greenwin.VLUsers.entities.AppUser;
 import org.greenwin.VLUsers.exceptions.UserAlreadyExistsException;
 import org.greenwin.VLUsers.exceptions.UserNotFoundException;
-import org.greenwin.VLUsers.repositories.AppRoleRepository;
 import org.greenwin.VLUsers.repositories.AppUserRepository;
 import org.greenwin.VLUsers.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin("*")
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    AppUserRepository appUserRepository;
+    private AppUserRepository appUserRepository;
 
     @Autowired
-    AppRoleRepository appRoleRepository;
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    private MailSender sender;
 
     @Autowired
     ApplicationPropertiesConfiguration configuration;
@@ -86,6 +89,17 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable int id){
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/visit")
+    public void visit(){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText("test");
+        message.setSentDate(new Date());
+        message.setTo("juliencauwet@yahoo.fr");
+        message.setSubject("test");
+        sender.send(message);
+
     }
 
 }
