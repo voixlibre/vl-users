@@ -2,9 +2,11 @@ package org.greenwin.VLUsers.controllers;
 
 import org.greenwin.VLUsers.configuration.ApplicationPropertiesConfiguration;
 import org.greenwin.VLUsers.entities.AppUser;
+import org.greenwin.VLUsers.entities.Contact;
 import org.greenwin.VLUsers.exceptions.UserAlreadyExistsException;
 import org.greenwin.VLUsers.exceptions.UserNotFoundException;
 import org.greenwin.VLUsers.repositories.AppUserRepository;
+import org.greenwin.VLUsers.services.ContactService;
 import org.greenwin.VLUsers.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ContactService contactService;
 
     @Autowired
     private MailSender sender;
@@ -94,12 +99,19 @@ public class UserController {
     @GetMapping("/visit")
     public void visit(){
         SimpleMailMessage message = new SimpleMailMessage();
+        logger.info("envoi du mail");
         message.setText("test");
         message.setSentDate(new Date());
         message.setTo("juliencauwet@yahoo.fr");
         message.setSubject("test");
+        message.setFrom("julien.app.test@gmail.com");
         sender.send(message);
 
     }
 
+    @PostMapping(value = "/contact", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Contact contact(@RequestBody Contact contact){
+        logger.info("new contact");
+        return contactService.saveContact(contact);
+    }
 }
