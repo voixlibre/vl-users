@@ -114,4 +114,9 @@ public class UserController {
         logger.info("new contact");
         return contactService.saveContact(contact);
     }
+
+    @GetMapping(value = "/contacts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Contact> getAllContacts(){
+        return contactService.getAllContacts();
+    }
 }

@@ -5,6 +5,8 @@ import org.greenwin.VLUsers.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContactService {
 
@@ -14,4 +16,9 @@ public class ContactService {
     public Contact saveContact(Contact contact){
         return contactRepository.save(contact);
     }
+
+    public List<Contact> getAllContacts(){
+        return contactRepository.findAll();
+    }
+
 }
